@@ -1,28 +1,28 @@
 services:
-  front-end:
-    build:
-      context: .
-      dockerfile: ./docker/front/Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./front-end:/front-end
+  # front-end:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/front/Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./front-end:/front-end
 
   back-end:
     build:
       context: .
       dockerfile: ./docker/back/Dockerfile
     environment:
-      - MONGO_DATABASE=mongodb
-      - MONGO_PASSWORD=mongodb
-      - MONGO_USERNAME=mongodb
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_USERNAME=${MONGO_USERNAME}
     ports:
       - "4000:4000"
     volumes:
       - ./back-end:/back-end
 
   database:
-    container_name: mongo-workshop-db
+    container_name: mongo-db
     image: mongo:latest
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongodb
