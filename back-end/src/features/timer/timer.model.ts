@@ -1,6 +1,18 @@
-import { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 
-export interface Timer {
-  user_id: ObjectId;
-  time: number;
-}
+const TimerSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    time: {
+      type: Number,
+      required: true,
+    },
+  },
+  { versionKey: false }
+);
+
+const Timer = mongoose.model("Timer", TimerSchema);
+export default Timer;

@@ -1,51 +1,38 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserService } from "./user.service";
 
 export class UserController {
-  private userService: UserService;
-
-  constructor() {
-    this.userService = new UserService();
+  constructor(private userService: UserService) {
+    this.userService = userService;
   }
 
-  async getAll(req: Request, res: Response, next: NextFunction) {
-    console.log("toto");
+  getAll = async (req: Request, res: Response) => {
     try {
-      res.json(await this.userService.getAll());
-      console.log("test");
+      const users = await this.userService.getAll();
+      res.json(users);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(`Error while getting all users`, error.message);
-        next(error);
-      }
-      console.error(`Error while getting all users`, error);
-      next(error);
+      console.error(error);
+      res.status(500).json({ message: "Error fetching users" });
     }
-  }
+  };
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.json(await this.userService.create(req.body));
+      const user = await this.userService.create(req.body);
+      res.json(user);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(`Error while creating the user`, error.message);
-        next(error);
-      }
-      console.error(`Error while creating the user`, error);
       next(error);
+      res.status(500).json({ message: "Error creating user" });
     }
-  }
+  };
 
-  async connexion(req: Request, res: Response, next: NextFunction) {
+  connection = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.json(await this.userService.connexion(req.body));
+      const user = await this.userService.connection(req.body);
+      res.json(user);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(`Error while connecting`, error.message);
-        next(error);
-      }
-      console.error(`Error while connecting`, error);
       next(error);
+      res.status(500).json({ message: "Error connecting user" });
     }
-  }
+  };
 }
